@@ -71,6 +71,27 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class QuoteInfoPage extends StatelessWidget {
+  const QuoteInfoPage({Key? key}) :super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Citation'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
 
   var jsonList;
@@ -110,8 +131,23 @@ class _MyHomePageState extends State<MyHomePage> {
           itemBuilder: (BuildContext context, int index){
             return Card(
                 child: ListTile(
-                  title: Text(jsonList[index]['content']),
-                  subtitle: Text(jsonList[index]['author']),
+                  /*leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(80),
+                      child: Image.network(
+                        jsonList[index],
+                        fit: BoxFit.fill,
+                        width: 50,
+                        height: 50,
+                      ),
+                    )*/
+                    title: Text(jsonList[index]['content']),
+                    subtitle: Text(jsonList[index]['author']),
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const QuoteInfoPage()),
+                      );
+                    }
                 ));
           }),
     );
