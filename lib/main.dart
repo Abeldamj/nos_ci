@@ -1,4 +1,4 @@
-// import 'dart:convert';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -74,20 +74,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   var jsonList;
+//   var jsonLength;
   @override
   void initState() {
-    getHttp();
+    getCitations();
   }
 
 
-  void getHttp() async {
+  void getCitations() async {
     try {
-      var response = await dio.get('https://quotable.io/quotes?page=1');
+      var response = await dio.get('https://api.quotable.io/quotes');
       if (response.statusCode == 200) {
-//         setState(() {
-//           jsonList = response.data as List;
-//         })
-        print(response);
+        setState(() {
+//           jsonLength = response.data["count"];
+          jsonList = response.data['results'] as List;
+        });
+//         print(response);
       } else {
         print(response.statusCode);
       }
@@ -104,12 +106,12 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Our citations'),
       ),
       body: ListView.builder(
-          itemCount: 10,
+          itemCount: jsonList == null ? 0 : jsonList.length,
           itemBuilder: (BuildContext context, int index){
             return Card(
                 child: ListTile(
-                  title: Text('name'),
-                  subtitle: Text('power'),
+                  title: Text(jsonList[index]['content']),
+                  subtitle: Text(jsonList[index]['author']),
                 ));
           }),
     );
